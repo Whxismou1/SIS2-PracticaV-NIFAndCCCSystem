@@ -20,5 +20,9 @@ public class Main {
         System.out.println("---------------");
         String nif2 = "X3465715D";
         sc.isNifValid(nif2, false);
+        
+        ExcelManager exc = new ExcelManager();
+        exc.readEcel();
+        
     }
 }
