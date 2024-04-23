@@ -57,6 +57,11 @@ public class CCCController {
             realSecondDigitOfControl = temp;
         }
 
+        if(realFirstDigitOfControl != firstDigitOfControl || realSecondDigitOfControl != secondDigitOfControl){
+            //check xml
+        }
+        
+        
         System.out.println(realSecondDigitOfControl);
     }
 

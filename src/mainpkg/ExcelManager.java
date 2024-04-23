@@ -5,8 +5,11 @@
  */
 package mainpkg;
 
+import Entities.Contribuyente;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,36 +21,48 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelManager {
 
-    public void readEcel() {
+    public List<Contribuyente> readEcel() {
         long startTime = System.currentTimeMillis();
         FileInputStream f = null;
         XSSFWorkbook libro = null;
+        List<Contribuyente> entradasExcel = new ArrayList<>();
         try {
             f = new FileInputStream("resources/SistemasAgua.xlsx");
             libro = new XSSFWorkbook(f);
             XSSFSheet hoja = libro.getSheetAt(0);
 
-            Iterator<Row> filas = hoja.iterator();
-            Iterator<Cell> celdas;
+            Row encabezado = hoja.getRow(0);
 
-            Row fila;
-            Cell celda;
-
-            while (filas.hasNext()) {
-                fila = filas.next();
-                celdas = fila.cellIterator();
-
-                while (celdas.hasNext()) {
-                    celda = celdas.next();
-                    System.out.println(celda);
-                    switch (celda.getCellType()) {
-
-                    }
-
+            if (encabezado != null) {
+                List<String> nombresColumnas = new ArrayList<>();
+                Iterator<Cell> celdasEncabezado = encabezado.cellIterator();
+                while (celdasEncabezado.hasNext()) {
+                    Cell celda = celdasEncabezado.next();
+                    nombresColumnas.add(celda.getStringCellValue());
                 }
 
+                Iterator<Row> filas = hoja.iterator();
+                filas.next(); // Saltar la primera fila (encabezado)
+                while (filas.hasNext()) {
+                    Row fila = filas.next();
+                    Iterator<Cell> celdas = fila.cellIterator();
+                    Contribuyente contribuyente = new Contribuyente();
+
+                    // Recorremos las celdas de la fila
+                    while (celdas.hasNext()) {
+                        Cell celda = celdas.next();
+                        int indiceCelda = celda.getColumnIndex();
+                        String nombreColumna = nombresColumnas.get(indiceCelda);
+                        asignarValorContribuyente(contribuyente, nombreColumna, celda);
+                    }
+
+                    // Agregar el contribuyente a la lista
+                    entradasExcel.add(contribuyente);
+
+                }
             }
 
+//            return entradas;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -65,5 +80,99 @@ public class ExcelManager {
             long duration = endTime - startTime;
             System.out.println("Tiempo de lectura del archivo: " + duration + " milisegundos");
         }
+        return entradasExcel;
     }
+
+    private String getCellValue(Cell celda) {
+        if (celda == null) {
+            return null;
+        }
+
+        switch (celda.getCellType()) {
+            case STRING:
+                String value = celda.getStringCellValue();
+                return value.isEmpty() ? null : value;
+            case NUMERIC:
+                return String.valueOf(celda.getNumericCellValue());
+            case BLANK:
+                return null;
+            default:
+                return null;
+        }
+
+    }
+
+    private void asignarValorContribuyente(Contribuyente contribuyente, String nombreColumna, Cell celda) {
+        switch (nombreColumna) {
+            case "Nombre":
+                // Manejar el campo Nombre
+                contribuyente.setNombre(getCellValue(celda));
+                break;
+            case "Apellido1":
+                // Manejar el campo Apellido1
+                contribuyente.setApellido1(getCellValue(celda));
+                break;
+            case "Apellido2":
+                // Manejar el campo Apellido2
+                contribuyente.setApellido2(getCellValue(celda));
+                break;
+            case "NIFNIE":
+                // Manejar el campo NIFNIE
+                contribuyente.setNIFNIE(getCellValue(celda));
+                break;
+            case "Direccion":
+                // Manejar el campo Direccion
+                contribuyente.setDireccion(getCellValue(celda));
+                break;
+            case "Numero":
+                // Manejar el campo Numero
+                contribuyente.setNumero(getCellValue(celda));
+                break;
+            case "PaisCCC":
+                // Manejar el campo PaisCCC
+                contribuyente.setPaisCCC(getCellValue(celda));
+                break;
+            case "CCC":
+                // Manejar el campo CCC
+                contribuyente.setCCC(getCellValue(celda));
+                break;
+            case "IBAN":
+                // Manejar el campo IBAN
+                contribuyente.setIBAN(getCellValue(celda));
+                break;
+            case "Email":
+                // Manejar el campo Email
+                contribuyente.setEmail(getCellValue(celda));
+                break;
+            case "Exencion":
+                // Manejar el campo Exencion
+                contribuyente.setExencion(getCellValue(celda));
+                break;
+            case "Bonificacion":
+                // Manejar el campo Bonificacion
+                contribuyente.setBonificacion(getCellValue(celda));
+                break;
+            case "LecturaAnterior":
+                // Manejar el campo LecturaAnterior
+                contribuyente.setLecturaAnterior(getCellValue(celda));
+                break;
+            case "LecturaActual":
+                // Manejar el campo LecturaActual
+                contribuyente.setLecturaActual(getCellValue(celda));
+                break;
+            case "FechaAlta":
+                // Manejar el campo FechaAlta
+                contribuyente.setFechaAlta(getCellValue(celda));
+                break;
+            case "FechaBaja":
+                // Manejar el campo FechaBaja
+                contribuyente.setFechaBaja(getCellValue(celda));
+                break;
+            case "conceptosACobrar":
+                // Manejar el campo conceptosACobrar
+                contribuyente.setConceptosACobrar(getCellValue(celda));
+                break;
+        }
+    }
+
 }
