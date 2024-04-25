@@ -20,24 +20,81 @@ import org.apache.poi.ss.usermodel.Cell;
 public class Main {
 
     public static void main(String[] args) {
-//        NIFController sc = new NIFController();
-//        String nif = "72331034X";
-//        sc.isNifValid(nif, true);
-//        System.out.println("---------------");
-//        String nif2 = "Y5127874S";
-//        sc.isNifValid(nif2, false);
-//        
-        ExcelManager exc = new ExcelManager();
 
-        List<Contribuyente> lista = exc.readEcel();
+        ExcelManager excManag = new ExcelManager();
+        CCCController cccController = new CCCController();
+        IBANController ibanCont = new IBANController();
+        NIFController nifControler = new NIFController();
+
+        List<Contribuyente> lista = excManag.readEcel();
+
+        List<Contribuyente> buenNie = new LinkedList<>();
+        List<Contribuyente> malNie = new LinkedList<>();
 
         for (int i = 0; i < lista.size(); i++) {
-            System.out.println(lista.get(i).toString());
-        }
+            Contribuyente actualContribuyyente = lista.get(i);
+            String nif = actualContribuyyente.getNIFNIE();
+            System.out.println("Nif acutal: " + nif);
+            if (nif == null) {
+                malNie.add(actualContribuyyente);
+            } else {
+                boolean isSpanish = nifControler.isSpanish(nif);
+                if (nifControler.isNifValid(nif, isSpanish)) {
+                    
+                    if(nifControler.getIsSaneado()){
+                        //Xml
+                    }
+                    
+                    String cccActual = actualContribuyyente.getCCC();
+                    
+                    buenNie.add(actualContribuyyente);
+                    
+                    
+                    cccController.checkCCC(cccActual);
+                    
+                    ibanCont.checkIban(actualContribuyyente.getCCC(), actualContribuyyente.getPaisCCC())-;
+                    
+                    
+                    
+                    
+                    
+                    
+                } else {
+ 
+                                      
+                    malNie.add(actualContribuyyente);
+                }
 
-//        CCCController sc = new CCCController();
-//        sc.checkCCC("11112223774444444444");
+            }
+
+        }
+        System.out.println("Buen nie");
+        printList(buenNie);
+        System.out.println("--------------------------------------------");
+        System.out.println("Mal nie");
+        printList(malNie);
+
+//        for (int i = 0; i < lista.size(); i++) {
+//            System.out.println(lista.get(i).toString());
+//        }
+        
+//        Contribuyente ol = lista.get(0);
+//        NIFController sc = new NIFController();
+//        sc.isNifValid(ol.getNIFNIE(), true);
+//        
+//        
+//
+//        CCCController ccc = new CCCController();
+//        ccc.checkCCC(ol.getCCC());
 //        IBANController ib = new IBANController();
-//        ib.checkIban("11112223504444444444", "ES");
+//        ib.checkIban(ol.getCCC(), ol.getPaisCCC());
+    }
+
+    private static void printList(List<Contribuyente> waa) {
+        for (int i = 0; i < waa.size(); i++) {
+            Contribuyente get = waa.get(i);
+            System.out.println(get.toString());
+
+        }
     }
 }

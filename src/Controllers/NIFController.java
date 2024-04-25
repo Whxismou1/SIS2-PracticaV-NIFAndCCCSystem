@@ -139,4 +139,20 @@ public class NIFController {
 
     }
 
+    public boolean isSpanish(String nif) {
+        boolean valifNIE = isValidStructureNIE(nif);
+        boolean validNIF = isValidStructureNIF(nif);
+        
+        if(valifNIE){
+            return false;
+        }
+        
+        if(validNIF){
+            return true;
+        }
+        
+        
+        return false;
+    }
+
 }

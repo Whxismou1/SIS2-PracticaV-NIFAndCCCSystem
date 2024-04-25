@@ -11,6 +11,7 @@ package Entities;
  */
 public class Contribuyente {
 
+    private Long id;
     private String nombre;
     private String apellido1;
     private String apellido2;
@@ -30,6 +31,14 @@ public class Contribuyente {
     private String conceptosACobrar;
 
     public Contribuyente() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -162,8 +171,9 @@ public class Contribuyente {
 
     @Override
     public String toString() {
-        return "Contribuyente{" + "nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", NIFNIE=" + NIFNIE + ", direccion=" + direccion + ", numero=" + numero + ", paisCCC=" + paisCCC + ", CCC=" + CCC + ", IBAN=" + IBAN + ", email=" + email + ", exencion=" + exencion + ", bonificacion=" + bonificacion + ", lecturaAnterior=" + lecturaAnterior + ", lecturaActual=" + lecturaActual + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", conceptosACobrar=" + conceptosACobrar + '}';
+        return "Contribuyente{" + "id=" + id + ", nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", NIFNIE=" + NIFNIE + ", direccion=" + direccion + ", numero=" + numero + ", paisCCC=" + paisCCC + ", CCC=" + CCC + ", IBAN=" + IBAN + ", email=" + email + ", exencion=" + exencion + ", bonificacion=" + bonificacion + ", lecturaAnterior=" + lecturaAnterior + ", lecturaActual=" + lecturaActual + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", conceptosACobrar=" + conceptosACobrar + '}';
     }
+
 
     public String getConceptosACobrar() {
         return conceptosACobrar;

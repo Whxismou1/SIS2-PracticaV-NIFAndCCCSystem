@@ -43,11 +43,12 @@ public class ExcelManager {
 
                 Iterator<Row> filas = hoja.iterator();
                 filas.next(); // Saltar la primera fila (encabezado)
+                Long actualId = 2L;
                 while (filas.hasNext()) {
                     Row fila = filas.next();
                     Iterator<Cell> celdas = fila.cellIterator();
                     Contribuyente contribuyente = new Contribuyente();
-
+                    contribuyente.setId(actualId);
                     // Recorremos las celdas de la fila
                     while (celdas.hasNext()) {
                         Cell celda = celdas.next();
@@ -58,6 +59,7 @@ public class ExcelManager {
 
                     // Agregar el contribuyente a la lista
                     entradasExcel.add(contribuyente);
+                    actualId++;
 
                 }
             }
