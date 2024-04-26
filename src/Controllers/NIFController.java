@@ -35,7 +35,6 @@ public class NIFController {
     }
 
     private boolean isValidLength(String nif) {
-
         return nif != null && nif.length() == 9;
     }
 
@@ -75,16 +74,18 @@ public class NIFController {
 
             char letraControlReal = LETRAS_CONTROL[Integer.parseInt(digits) % 23];
 
-            System.out.println(letraControlActual);
+            System.out.println("waaaaaaaaaaa:" + letraControlActual);
             System.out.println(letraControlReal);
 
             boolean isSameLetters = (letraControlActual == letraControlReal);
 
             if (isSameLetters) {
                 System.out.println("Las letras son iguales no hayque hacer ni subsanar nada");
+                isSaneado = false;
+                return true;
             } else {
                 System.out.println("Las letras no son iguales  hayque subsanar ");
-
+                isSaneado = true;
                 String newNif = digits + letraControlReal;
                 System.out.println("Nuevo nif: " + newNif);
             }
@@ -101,14 +102,16 @@ public class NIFController {
 
             if (isSameLetters) {
                 System.out.println("Las letras son iguales no hayque hacer ni subsanar nada");
+                isSaneado = false;
                 return true;
             } else {
                 System.out.println("Las letras no son iguales  hay que subsanar ");
 
                 String newNie = digits + letraControlReal;
                 System.out.println("Nuevo nif: " + newNie);
+                isSaneado = true;
                 return true;
-            }   
+            }
 
         }
 
@@ -142,17 +145,20 @@ public class NIFController {
     public boolean isSpanish(String nif) {
         boolean valifNIE = isValidStructureNIE(nif);
         boolean validNIF = isValidStructureNIF(nif);
-        
-        if(valifNIE){
+
+        if (valifNIE) {
             return false;
         }
-        
-        if(validNIF){
+
+        if (validNIF) {
             return true;
         }
-        
-        
+
         return false;
+    }
+
+    public void clearSaneado() {
+        this.isSaneado = false;
     }
 
 }

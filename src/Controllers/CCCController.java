@@ -32,7 +32,15 @@ public class CCCController {
             int num = Integer.parseInt(String.valueOf(sb.charAt(i)));
             sum += num * arrayPos[i];
         }
-        int realFirstDigitOfControl = 11 - (sum % 11);
+        int tempOne = 11 - (sum % 11);
+        int realFirstDigitOfControl;
+        if (tempOne >= 11) {
+            realFirstDigitOfControl = 0;
+        } else if (tempOne >= 10) {
+            realFirstDigitOfControl = 1;
+        } else {
+            realFirstDigitOfControl = tempOne;
+        }
 
         sb.delete(0, sb.length());
 
@@ -45,7 +53,7 @@ public class CCCController {
             int num = Integer.parseInt(String.valueOf(sb.charAt(i)));
             sum += num * arrayPos[i];
         }
-        
+
         int temp = 11 - (sum % 11);
         int realSecondDigitOfControl;
 
@@ -57,11 +65,11 @@ public class CCCController {
             realSecondDigitOfControl = temp;
         }
 
-        if(realFirstDigitOfControl != firstDigitOfControl || realSecondDigitOfControl != secondDigitOfControl){
-            //check xml
+        if (realFirstDigitOfControl != firstDigitOfControl || realSecondDigitOfControl != secondDigitOfControl) {
+            //check xml genereta
+            //actual.setCCC(new ccc)
         }
-        
-        
+
         System.out.println(realSecondDigitOfControl);
     }
 

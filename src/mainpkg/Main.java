@@ -19,7 +19,10 @@ import org.apache.poi.ss.usermodel.Cell;
  */
 public class Main {
 
+    private static List<String> nifListas;
+
     public static void main(String[] args) {
+        nifListas = new LinkedList<>();
 
         ExcelManager excManag = new ExcelManager();
         CCCController cccController = new CCCController();
@@ -40,44 +43,37 @@ public class Main {
             } else {
                 boolean isSpanish = nifControler.isSpanish(nif);
                 if (nifControler.isNifValid(nif, isSpanish)) {
-                    
-                    if(nifControler.getIsSaneado()){
+
+                    if (nifControler.getIsSaneado()) {
                         //Xml
                     }
-                    
+
                     String cccActual = actualContribuyyente.getCCC();
-                    
+
                     buenNie.add(actualContribuyyente);
-                    
-                    
+
                     cccController.checkCCC(cccActual);
-                    
-                    ibanCont.checkIban(actualContribuyyente.getCCC(), actualContribuyyente.getPaisCCC())-;
-                    
-                    
-                    
-                    
-                    
-                    
+
+                    ibanCont.checkIban(actualContribuyyente.getCCC(), actualContribuyyente.getPaisCCC());
+
                 } else {
- 
-                                      
+
                     malNie.add(actualContribuyyente);
                 }
 
             }
 
         }
-        System.out.println("Buen nie");
-        printList(buenNie);
-        System.out.println("--------------------------------------------");
-        System.out.println("Mal nie");
-        printList(malNie);
+//        System.out.println("Buen nie");
+//        printList(buenNie);
+//        System.out.println("--------------------------------------------");
+//        System.out.println("Mal nie");
+//        printList(malNie);
 
-//        for (int i = 0; i < lista.size(); i++) {
-//            System.out.println(lista.get(i).toString());
-//        }
-        
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println(lista.get(i).toString());
+        }
+
 //        Contribuyente ol = lista.get(0);
 //        NIFController sc = new NIFController();
 //        sc.isNifValid(ol.getNIFNIE(), true);
