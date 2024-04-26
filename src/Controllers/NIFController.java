@@ -95,17 +95,20 @@ public class NIFController {
             char letraControlActual = nif.charAt(nif.length() - 1);
             String digits = firstLetterNum + nif.substring(1, nif.length() - 1);
             System.out.println("digits: " + digits);
-
-            char letraControlReal = LETRAS_CONTROL[Integer.parseInt(digits) % 23];
+            int index = Integer.parseInt(digits) % 23;
+            if (index < 0) {
+                index += 23; // Ajustar el índice negativo
+            }
+            char letraControlReal = LETRAS_CONTROL[index];
 
             boolean isSameLetters = (letraControlActual == letraControlReal);
 
             if (isSameLetters) {
-                System.out.println("Las letras son iguales no hayque hacer ni subsanar nada");
+                System.out.println("Las letras son iguales no hay que hacer ni subsanar nada");
                 isSaneado = false;
                 return true;
             } else {
-                System.out.println("Las letras no son iguales  hay que subsanar ");
+                System.out.println("Las letras no son iguales hay que subsanar ");
 
                 String newNie = digits + letraControlReal;
                 System.out.println("Nuevo nif: " + newNie);
