@@ -5,6 +5,9 @@
  */
 package Controllers;
 
+import Entities.Contribuyente;
+import java.util.List;
+
 /**
  *
  * @author moasin
@@ -12,10 +15,12 @@ package Controllers;
 public class CCCController {
 
     private static int[] arrayPos = {1, 2, 4, 8, 5, 10, 9, 7, 3, 6};
+    private boolean isCorregido = false;
 
-    public void checkCCC(String ccc) {
+    public void checkCCC(String ccc, List<Contribuyente> malCCC, Contribuyente actualContri) {
         if (!isValidLengthCCC(ccc)) {
-            System.out.println("Error CCC no se puede subsanar por la longitud");
+//            System.out.println("Error CCC no se puede subsanar por la longitud");
+            malCCC.add(actualContri);
             return;
         }
 
@@ -23,9 +28,11 @@ public class CCCController {
         int secondDigitOfControl = Integer.parseInt(String.valueOf(ccc.charAt(9)));
 //        System.out.println(firstDigitOfControl + "" + secondDigitOfControl);
         StringBuilder sb = new StringBuilder("00");
+        StringBuilder newCCC = new StringBuilder();
 
         for (int i = 0; i < 8; i++) {
             sb.append(ccc.charAt(i));
+            newCCC.append(ccc.charAt(i));
         }
         int sum = 0;
         for (int i = 0; i < sb.length(); i++) {
@@ -41,11 +48,15 @@ public class CCCController {
         } else {
             realFirstDigitOfControl = tempOne;
         }
-
+        
+        newCCC.append(realFirstDigitOfControl);
+        
         sb.delete(0, sb.length());
-
+        
+        String secondPart = "";
         for (int i = 10; i < ccc.length(); i++) {
             sb.append(ccc.charAt(i));
+            secondPart += ccc.charAt(i);
         }
 
         sum = 0;
@@ -65,12 +76,20 @@ public class CCCController {
             realSecondDigitOfControl = temp;
         }
 
+        
+        newCCC.append(realSecondDigitOfControl+secondPart);
+        
         if (realFirstDigitOfControl != firstDigitOfControl || realSecondDigitOfControl != secondDigitOfControl) {
             //check xml genereta
+            isCorregido = true;
+            actualContri.setCCC(newCCC.toString());
+            malCCC.add(actualContri);
             //actual.setCCC(new ccc)
+        }else{
+            isCorregido = false;
         }
 
-        System.out.println(realSecondDigitOfControl);
+//        System.out.println(realSecondDigitOfControl);
     }
 
     private boolean isValidLengthCCC(String ccc) {
@@ -80,4 +99,9 @@ public class CCCController {
 
         return true;
     }
+
+    public boolean getIsCorregido() {
+        return isCorregido;
+    }
+    
 }

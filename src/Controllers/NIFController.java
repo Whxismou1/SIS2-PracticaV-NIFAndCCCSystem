@@ -5,6 +5,8 @@
  */
 package Controllers;
 
+import Entities.Contribuyente;
+
 /**
  *
  * @author moasin
@@ -14,24 +16,25 @@ public class NIFController {
     private static final char[] LETRAS_CONTROL = {'T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'};
     private boolean isSaneado = false;
 
-    public boolean isNifValid(String nif, boolean isEspañol) {
+    public boolean isNifValid(String nif, boolean isEspañol, Contribuyente actualContribuyente) {
         if (!isValidLength(nif)) {
-            System.out.println("Longitud del NIF/NIE no valida");
+//            System.out.println("Longitud del NIF/NIE no valida");
             return false;
         }
 
         if (isEspañol) {
             if (isValidStructureNIF(nif)) {
-                return checkControlLetter(nif, true);
+                return checkControlLetter(nif, true, actualContribuyente);
             }
             return false;
         } else {
-            if (isValidStructureNIE(nif)) {
-                return checkControlLetter(nif, false);
+            if (isValidStructureNIEExtranjero(nif)) {
+                return checkControlLetter(nif, false, actualContribuyente);
             }
+            return false;
         }
 
-        return true;
+//        return false;
     }
 
     private boolean isValidLength(String nif) {
@@ -48,11 +51,11 @@ public class NIFController {
                 return false;
             }
         }
-        System.out.println("Es valida la estructura del NIF");
+//        System.out.println("Es valida la estructura del NIF");
         return true;
     }
 
-    private boolean isValidStructureNIE(String nif) {
+    private boolean isValidStructureNIEExtranjero(String nif) {
         if (!Character.isLetter(nif.charAt(nif.length() - 1)) || !Character.isLetter(nif.charAt(0))) {
             return false;
         }
@@ -62,39 +65,41 @@ public class NIFController {
                 return false;
             }
         }
-        System.out.println("Es valida la estructura del NIE extranjero");
+//        System.out.println("Es valida la estructura del NIE extranjero");
         return true;
     }
 
-    private boolean checkControlLetter(String nif, boolean español) {
+    private boolean checkControlLetter(String nif, boolean español, Contribuyente actualContri) {
         if (español) {
-
             char letraControlActual = nif.charAt(nif.length() - 1);
             String digits = nif.substring(0, nif.length() - 1);
 
             char letraControlReal = LETRAS_CONTROL[Integer.parseInt(digits) % 23];
 
-            System.out.println("waaaaaaaaaaa:" + letraControlActual);
-            System.out.println(letraControlReal);
-
+//            System.out.println("waaaaaaaaaaa:" + letraControlActual);
+//            System.out.println(letraControlReal);
             boolean isSameLetters = (letraControlActual == letraControlReal);
 
             if (isSameLetters) {
-                System.out.println("Las letras son iguales no hayque hacer ni subsanar nada");
+//              System.out.println("Las letras son iguales no hayque hacer ni subsanar nada");
                 isSaneado = false;
-                return true;
             } else {
-                System.out.println("Las letras no son iguales  hayque subsanar ");
-                isSaneado = true;
+//              System.out.println("Las letras no son iguales  hayque subsanar ");
+//                isSaneado = true;
                 String newNif = digits + letraControlReal;
-                System.out.println("Nuevo nif: " + newNif);
+                actualContri.setNIFNIE(newNif);
+                //asigarlo al conteibuyente
+                isSaneado = true;
+//              System.out.println("Nuevo nif: " + newNif);
+//                return true;
             }
 
+            return true;
         } else {
             int firstLetterNum = getFirstLetterNIF(nif);
             char letraControlActual = nif.charAt(nif.length() - 1);
             String digits = firstLetterNum + nif.substring(1, nif.length() - 1);
-            System.out.println("digits: " + digits);
+//            System.out.println("digits: " + digits);
             int index = Integer.parseInt(digits) % 23;
             if (index < 0) {
                 index += 23; // Ajustar el índice negativo
@@ -104,22 +109,30 @@ public class NIFController {
             boolean isSameLetters = (letraControlActual == letraControlReal);
 
             if (isSameLetters) {
-                System.out.println("Las letras son iguales no hay que hacer ni subsanar nada");
+//                System.out.println("Las letras son iguales no hay que hacer ni subsanar nada");
                 isSaneado = false;
-                return true;
+//                return false;
             } else {
-                System.out.println("Las letras no son iguales hay que subsanar ");
-
-                String newNie = digits + letraControlReal;
-                System.out.println("Nuevo nif: " + newNie);
+//                System.out.println("Las letras no son iguales hay que subsanar ");
+                String beginIndex = "";
+                if(firstLetterNum == 0){
+                    beginIndex = "X";
+                }else if(firstLetterNum == 1){
+                    beginIndex = "Y";
+                }else if(firstLetterNum == 2){
+                    beginIndex = "Z";
+                }
+    
+                String newNie = beginIndex + digits.substring(1, digits.length()) + letraControlReal;
+                actualContri.setNIFNIE(newNie);
+//              System.out.println("Nuevo nif: " + newNie);
                 isSaneado = true;
-                return true;
             }
+            return true;
 
         }
 
-        System.out.println("Letra correcta no valida");
-        return false;
+//        System.out.println("Letra correcta no valida");
     }
 
     public boolean getIsSaneado() {
@@ -146,18 +159,17 @@ public class NIFController {
     }
 
     public boolean isSpanish(String nif) {
-        boolean valifNIE = isValidStructureNIE(nif);
+        boolean valifNIExtranjero = isValidStructureNIEExtranjero(nif);
         boolean validNIF = isValidStructureNIF(nif);
 
-        if (valifNIE) {
+        if (valifNIExtranjero) {
             return false;
         }
 
-        if (validNIF) {
-            return true;
-        }
-
-        return false;
+//        if (validNIF) {
+//            return true;
+//        }
+        return true;
     }
 
     public void clearSaneado() {

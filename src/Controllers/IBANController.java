@@ -5,6 +5,7 @@
  */
 package Controllers;
 
+import Entities.Contribuyente;
 import java.math.BigInteger;
 import java.util.HashMap;
 
@@ -14,7 +15,11 @@ import java.util.HashMap;
  */
 public class IBANController {
 
-    public String checkIban(String inputCCC, String country) {
+    public void checkIban(Contribuyente actualContri) {
+        
+        String inputCCC = actualContri.getCCC();
+        String country = actualContri.getPaisCCC();
+        
         HashMap<Character, Integer> tableCountry = new HashMap<>();
         StringBuilder sb = new StringBuilder();
         char firstLetter = 'A';
@@ -26,8 +31,8 @@ public class IBANController {
 
         int numOneCountry = tableCountry.get(country.charAt(0));
         int numTwoCountry = tableCountry.get(country.charAt(1));
-        System.out.println(numOneCountry);
-        System.out.println(numTwoCountry);
+//        System.out.println(numOneCountry);
+//        System.out.println(numTwoCountry);
 
         sb.append(inputCCC + numOneCountry + numTwoCountry + "00");
 
@@ -38,25 +43,25 @@ public class IBANController {
         BigInteger resto = codIban.mod(divisor);
         
         int diferencia = 98 - resto.intValue();
-        System.out.println("difenrecia: " + diferencia);
+//        System.out.println("difenrecia: " + diferencia);
 
         String numDiferencia = String.valueOf(diferencia);
         String newNum = "";
 
         if (numDiferencia.length() == 2) {
-            System.out.println("2 cifras");
+//            System.out.println("2 cifras");
             newNum += numDiferencia;
         } else {
             newNum += "0" + numDiferencia;
         }
 
-        System.out.println("new num:" + newNum);
+//        System.out.println("new num:" + newNum);
 
         sb.delete(0, sb.length());
         sb.append(country + newNum + inputCCC);
-        System.out.println(sb.toString());
+//        System.out.println(sb.toString());
 
-        return sb.toString();
+        actualContri.setIBAN( sb.toString());
     }
 
 }

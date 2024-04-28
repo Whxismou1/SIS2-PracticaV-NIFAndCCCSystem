@@ -21,6 +21,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelManager {
 
+    public void writeExcel(List<Contribuyente> listaContribuyentes){
+        try {
+            
+        } catch (Exception e) {
+            
+        }finally{
+            
+        }
+    }
+    
+    
+    
     public List<Contribuyente> readEcel() {
         long startTime = System.currentTimeMillis();
         FileInputStream f = null;
