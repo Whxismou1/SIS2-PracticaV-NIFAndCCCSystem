@@ -25,7 +25,6 @@ public class ErrorManager {
 
             for (int i = 0; i < lista.size(); i++) {
                 Contribuyente contr = lista.get(i);
-                //falta añadir id de la Cuenta
                 Element cuenta = new Element("Cuenta");
 
                 Attribute attr = new Attribute("id", contr.getId().toString());
@@ -51,7 +50,7 @@ public class ErrorManager {
             }
             XMLOutputter xml = new XMLOutputter();
             xml.setFormat(Format.getPrettyFormat());
-            xml.output(doc, new FileWriter("resources/ErroresCCC.xml"));
+            xml.output(doc, new FileWriter("src/resources/ErroresCCC.xml"));
         } catch (IOException ex) {
             Logger.getLogger(ErrorManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,7 +63,6 @@ public class ErrorManager {
 
             for (int i = 0; i < lista.size(); i++) {
                 Contribuyente contr = lista.get(i);
-                //falta añadir id del Contribuyente
                 Element contribuyente = new Element("Contribuyente");
                 Attribute attr = new Attribute("id", contr.getId().toString());
                 contribuyente.setAttribute(attr);
@@ -87,7 +85,7 @@ public class ErrorManager {
 
             XMLOutputter xml = new XMLOutputter();
             xml.setFormat(Format.getPrettyFormat());
-            xml.output(doc, new FileWriter("resources/ErroresNifNie.xml"));
+            xml.output(doc, new FileWriter("src/resources/ErroresNifNie.xml"));
         } catch (IOException ex) {
             Logger.getLogger(ErrorManager.class.getName()).log(Level.SEVERE, null, ex);
         }

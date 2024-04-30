@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controllers;
 
 import Entities.Contribuyente;
 import java.math.BigInteger;
 import java.util.HashMap;
 
-/**
- *
- * @author moasin
- */
+
 public class IBANController {
 
     public void checkIban(Contribuyente actualContri) {
@@ -31,8 +23,6 @@ public class IBANController {
 
         int numOneCountry = tableCountry.get(country.charAt(0));
         int numTwoCountry = tableCountry.get(country.charAt(1));
-//        System.out.println(numOneCountry);
-//        System.out.println(numTwoCountry);
 
         sb.append(inputCCC + numOneCountry + numTwoCountry + "00");
 
@@ -43,23 +33,19 @@ public class IBANController {
         BigInteger resto = codIban.mod(divisor);
         
         int diferencia = 98 - resto.intValue();
-//        System.out.println("difenrecia: " + diferencia);
 
         String numDiferencia = String.valueOf(diferencia);
         String newNum = "";
 
         if (numDiferencia.length() == 2) {
-//            System.out.println("2 cifras");
             newNum += numDiferencia;
         } else {
             newNum += "0" + numDiferencia;
         }
 
-//        System.out.println("new num:" + newNum);
 
         sb.delete(0, sb.length());
         sb.append(country + newNum + inputCCC);
-//        System.out.println(sb.toString());
 
         actualContri.setIBAN( sb.toString());
     }

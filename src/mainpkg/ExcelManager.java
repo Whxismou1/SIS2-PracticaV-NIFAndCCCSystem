@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package mainpkg;
 
 import Entities.Contribuyente;
@@ -16,40 +12,33 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
-/**
- *
- * @author moasin
- */
 public class ExcelManager {
 
-    public void writeExcel(List<Contribuyente> listaContribuyentes, int fila, int columna, String dato){
-        String filePath = "resources/SistemasAgua.xlsx";
-        try {
-            // Cargar el archivo Excel existente
+    public void writeExcel(List<Contribuyente> listaContribyente){
+         String filePath = "src/resources/SistemasAgua.xlsx";
+         try {
             FileInputStream fileInputStream = new FileInputStream(new File(filePath));
             Workbook workbook = WorkbookFactory.create(fileInputStream);
             Sheet sheet = workbook.getSheetAt(0);
+            int actualRow = 1;
+            System.out.println("Escribiendo datos corregidos en el archivo Excel...");
+            
+            for (Contribuyente actualContribuyente : listaContribyente) {
+                Row row = sheet.createRow(actualRow++);
 
-            int rowNum = fila;
-            int cellNum = columna;
-            Row row = sheet.getRow(rowNum);
-            if (row == null) {
-                row = sheet.createRow(rowNum);
-            }
-            Cell cell = row.getCell(cellNum);
-            if (cell == null) {
-                cell = row.createCell(cellNum);
-            }
-
-            cell.setCellValue(dato);
-
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            workbook.write(fileOutputStream);
-
-            fileOutputStream.close();
+                if (!isEmptyContribuyente(actualContribuyente)) {
+                    writeContribuyenteToRow(actualContribuyente, row);
+                }
+            System.out.println("Progreso: " + (actualRow - 1) + "/" + listaContribyente.size());
+           }
+            
+            FileOutputStream outputStream = new FileOutputStream(filePath);
+            workbook.write(outputStream);
             workbook.close();
+            outputStream.close();
 
-            System.out.println("Se escribió " + dato + " en la fila " + fila + " y columna " + columna + ".");
+            System.out.println("Los datos se han escrito correctamente en el archivo Excel.");
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,15 +46,12 @@ public class ExcelManager {
         }
     }
     
-    
-    
     public List<Contribuyente> readEcel() {
-        long startTime = System.currentTimeMillis();
         FileInputStream f = null;
         XSSFWorkbook libro = null;
         List<Contribuyente> entradasExcel = new ArrayList<>();
         try {
-            f = new FileInputStream("resources/SistemasAgua.xlsx");
+            f = new FileInputStream("src/resources/SistemasAgua.xlsx");
             libro = new XSSFWorkbook(f);
             XSSFSheet hoja = libro.getSheetAt(0);
 
@@ -102,7 +88,6 @@ public class ExcelManager {
                 }
             }
 
-//            return entradas;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -116,9 +101,6 @@ public class ExcelManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            long endTime = System.currentTimeMillis();
-            long duration = endTime - startTime;
-            System.out.println("Tiempo de lectura del archivo: " + duration + " milisegundos");
         }
         return entradasExcel;
     }
@@ -145,74 +127,92 @@ public class ExcelManager {
     private void asignarValorContribuyente(Contribuyente contribuyente, String nombreColumna, Cell celda) {
         switch (nombreColumna) {
             case "Nombre":
-                // Manejar el campo Nombre
                 contribuyente.setNombre(getCellValue(celda));
                 break;
             case "Apellido1":
-                // Manejar el campo Apellido1
                 contribuyente.setApellido1(getCellValue(celda));
                 break;
             case "Apellido2":
-                // Manejar el campo Apellido2
                 contribuyente.setApellido2(getCellValue(celda));
                 break;
             case "NIFNIE":
-                // Manejar el campo NIFNIE
                 contribuyente.setNIFNIE(getCellValue(celda));
                 break;
             case "Direccion":
-                // Manejar el campo Direccion
                 contribuyente.setDireccion(getCellValue(celda));
                 break;
             case "Numero":
-                // Manejar el campo Numero
                 contribuyente.setNumero(getCellValue(celda));
                 break;
             case "PaisCCC":
-                // Manejar el campo PaisCCC
                 contribuyente.setPaisCCC(getCellValue(celda));
                 break;
             case "CCC":
-                // Manejar el campo CCC
                 contribuyente.setCCC(getCellValue(celda));
                 break;
             case "IBAN":
-                // Manejar el campo IBAN
                 contribuyente.setIBAN(getCellValue(celda));
                 break;
             case "Email":
-                // Manejar el campo Email
                 contribuyente.setEmail(getCellValue(celda));
                 break;
             case "Exencion":
-                // Manejar el campo Exencion
                 contribuyente.setExencion(getCellValue(celda));
                 break;
             case "Bonificacion":
-                // Manejar el campo Bonificacion
                 contribuyente.setBonificacion(getCellValue(celda));
                 break;
             case "LecturaAnterior":
-                // Manejar el campo LecturaAnterior
                 contribuyente.setLecturaAnterior(getCellValue(celda));
                 break;
             case "LecturaActual":
-                // Manejar el campo LecturaActual
                 contribuyente.setLecturaActual(getCellValue(celda));
                 break;
             case "FechaAlta":
-                // Manejar el campo FechaAlta
                 contribuyente.setFechaAlta(getCellValue(celda));
                 break;
             case "FechaBaja":
-                // Manejar el campo FechaBaja
                 contribuyente.setFechaBaja(getCellValue(celda));
                 break;
             case "conceptosACobrar":
-                // Manejar el campo conceptosACobrar
                 contribuyente.setConceptosACobrar(getCellValue(celda));
                 break;
         }
+    }
+    
+    private void writeContribuyenteToRow(Contribuyente contribuyente, Row row) {
+        row.createCell(0).setCellValue(contribuyente.getNombre());
+        row.createCell(1).setCellValue(contribuyente.getApellido1());
+        row.createCell(2).setCellValue(contribuyente.getApellido2());
+        row.createCell(3).setCellValue(contribuyente.getNIFNIE());
+        row.createCell(4).setCellValue(contribuyente.getDireccion());
+        row.createCell(5).setCellValue(contribuyente.getNumero());
+        row.createCell(6).setCellValue(contribuyente.getPaisCCC());
+        row.createCell(7).setCellValue(contribuyente.getCCC());
+        row.createCell(8).setCellValue(contribuyente.getIBAN());
+        row.createCell(9).setCellValue(contribuyente.getEmail());
+        row.createCell(10).setCellValue(contribuyente.getExencion());
+        row.createCell(11).setCellValue(contribuyente.getBonificacion());
+        row.createCell(12).setCellValue(contribuyente.getLecturaAnterior());
+        row.createCell(13).setCellValue(contribuyente.getLecturaActual());
+        row.createCell(14).setCellValue(contribuyente.getFechaAlta());
+        row.createCell(15).setCellValue(contribuyente.getFechaBaja());
+        row.createCell(16).setCellValue(contribuyente.getConceptosACobrar());
+    }
+
+    private boolean isEmptyContribuyente(Contribuyente contribuyente) {
+        return (contribuyente == null || (
+                contribuyente.getNIFNIE() == null &&
+                contribuyente.getCCC() == null &&
+                contribuyente.getIBAN() == null &&
+                contribuyente.getEmail() == null &&
+                contribuyente.getExencion() == null &&
+                contribuyente.getBonificacion() == null &&
+                contribuyente.getLecturaAnterior() == null &&
+                contribuyente.getLecturaActual() == null &&
+                contribuyente.getFechaAlta() == null &&
+                contribuyente.getFechaBaja() == null &&
+                contribuyente.getConceptosACobrar() == null));
     }
 
 }

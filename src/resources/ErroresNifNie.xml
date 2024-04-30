@@ -6,41 +6,11 @@
     <PrimerApellido>García</PrimerApellido>
     <SegundoApellido>Prieto</SegundoApellido>
   </Contribuyente>
-  <Contribuyente id="18">
-    <NIF_NIE>09548416N</NIF_NIE>
-    <Nombre>Antonio</Nombre>
-    <PrimerApellido>García</PrimerApellido>
-    <SegundoApellido>Rodríguez</SegundoApellido>
-  </Contribuyente>
-  <Contribuyente id="20">
-    <NIF_NIE>09548150E</NIF_NIE>
-    <Nombre>Pilar</Nombre>
-    <PrimerApellido>González</PrimerApellido>
-    <SegundoApellido>Salas</SegundoApellido>
-  </Contribuyente>
-  <Contribuyente id="38">
-    <NIF_NIE>09548295Y</NIF_NIE>
-    <Nombre>Cristina</Nombre>
-    <PrimerApellido>Alonso</PrimerApellido>
-    <SegundoApellido>Prieto</SegundoApellido>
-  </Contribuyente>
-  <Contribuyente id="42">
-    <NIF_NIE>09785530L</NIF_NIE>
-    <Nombre>Herminia</Nombre>
-    <PrimerApellido>Almanzar</PrimerApellido>
-    <SegundoApellido>Robles</SegundoApellido>
-  </Contribuyente>
   <Contribuyente id="54">
     <NIF_NIE>ss738010V</NIF_NIE>
     <Nombre>Alencar</Nombre>
     <PrimerApellido>Pasado</PrimerApellido>
     <SegundoApellido>Guerra</SegundoApellido>
-  </Contribuyente>
-  <Contribuyente id="67">
-    <NIF_NIE>09548827D</NIF_NIE>
-    <Nombre>Saaida</Nombre>
-    <PrimerApellido>Blanco</PrimerApellido>
-    <SegundoApellido>García</SegundoApellido>
   </Contribuyente>
   <Contribuyente id="77">
     <NIF_NIE>X3387K</NIF_NIE>

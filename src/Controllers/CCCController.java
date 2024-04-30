@@ -8,10 +8,7 @@ package Controllers;
 import Entities.Contribuyente;
 import java.util.List;
 
-/**
- *
- * @author moasin
- */
+
 public class CCCController {
 
     private static int[] arrayPos = {1, 2, 4, 8, 5, 10, 9, 7, 3, 6};
@@ -19,14 +16,12 @@ public class CCCController {
 
     public void checkCCC(String ccc, List<Contribuyente> malCCC, Contribuyente actualContri) {
         if (!isValidLengthCCC(ccc)) {
-//            System.out.println("Error CCC no se puede subsanar por la longitud");
             malCCC.add(actualContri);
             return;
         }
 
         int firstDigitOfControl = Integer.parseInt(String.valueOf(ccc.charAt(8)));
         int secondDigitOfControl = Integer.parseInt(String.valueOf(ccc.charAt(9)));
-//        System.out.println(firstDigitOfControl + "" + secondDigitOfControl);
         StringBuilder sb = new StringBuilder("00");
         StringBuilder newCCC = new StringBuilder();
 
@@ -84,12 +79,10 @@ public class CCCController {
             isCorregido = true;
             actualContri.setCCC(newCCC.toString());
             malCCC.add(actualContri);
-            //actual.setCCC(new ccc)
         }else{
             isCorregido = false;
         }
 
-//        System.out.println(realSecondDigitOfControl);
     }
 
     private boolean isValidLengthCCC(String ccc) {
