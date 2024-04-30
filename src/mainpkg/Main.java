@@ -70,16 +70,17 @@ public class Main {
 
                     if (nifControler.isNifValid(nifActual, isSpanish, actualContribuyyente)) {
                         if (nifControler.getIsSaneado()) {
+                            excManag.writeExcel(listaContribuyentes, Math.toIntExact(actualContribuyyente.getId()) - 1, 3, actualContribuyyente.getNIFNIE());
                             malNie.add(actualContribuyyente);
                             nifControler.clearSaneado();
                         }
 
                         //ccc y iban
                         String actualCCC = actualContribuyyente.getCCC();
-
                         cccController.checkCCC(actualCCC, malCCC, actualContribuyyente);
 
                         ibanCont.checkIban(actualContribuyyente);
+                        excManag.writeExcel(listaContribuyentes, Math.toIntExact(actualContribuyyente.getId()) - 1, 8, actualContribuyyente.getIBAN());
 
                     } else {
                         malNie.add(actualContribuyyente);
@@ -91,6 +92,7 @@ public class Main {
         
         errorManager.errorManagerCCC(malCCC);
         errorManager.errorManagerNIF(malNie);
+        
         
 
 //         for (int i = 0; i < malNie.size(); i++) {

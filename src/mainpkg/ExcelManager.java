@@ -6,7 +6,7 @@
 package mainpkg;
 
 import Entities.Contribuyente;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 
 /**
  *
@@ -21,13 +22,38 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ExcelManager {
 
-    public void writeExcel(List<Contribuyente> listaContribuyentes){
+    public void writeExcel(List<Contribuyente> listaContribuyentes, int fila, int columna, String dato){
+        String filePath = "resources/SistemasAgua.xlsx";
         try {
-            
-        } catch (Exception e) {
-            
-        }finally{
-            
+            // Cargar el archivo Excel existente
+            FileInputStream fileInputStream = new FileInputStream(new File(filePath));
+            Workbook workbook = WorkbookFactory.create(fileInputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            int rowNum = fila;
+            int cellNum = columna;
+            Row row = sheet.getRow(rowNum);
+            if (row == null) {
+                row = sheet.createRow(rowNum);
+            }
+            Cell cell = row.getCell(cellNum);
+            if (cell == null) {
+                cell = row.createCell(cellNum);
+            }
+
+            cell.setCellValue(dato);
+
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            workbook.write(fileOutputStream);
+
+            fileOutputStream.close();
+            workbook.close();
+
+            System.out.println("Se escribió " + dato + " en la fila " + fila + " y columna " + columna + ".");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     
